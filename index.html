@@ -15,13 +15,36 @@
       font-family: 'Bebas Neue', Arial, sans-serif;
     }
 
-    /* Весь блок как на thumbnail */
     .wrap {
       position: absolute;
-      left: 260px;   /* подгон по thumbnail; можно слегка скорректировать */
+      left: 260px;
       top: 260px;
       width: 1400px;
       height: 360px;
+      animation: containerIn 0.7s cubic-bezier(0.55,0.055,0.675,0.19) forwards;
+      opacity: 0;
+    }
+
+    /* ==== АНІМАЦИИ (приближенно к GT storyboard) ==== */
+    @keyframes containerIn {
+      0%   { opacity: 0; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes headerDown {
+      0%   { transform: translateY(-100%); }
+      100% { transform: translateY(0); }
+    }
+    @keyframes fadeInSoft {
+      0%   { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    @keyframes zoomInSoft {
+      0%   { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes statIn {
+      0%   { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
 
     /* Фон таблицы из 7fc4... */
@@ -30,6 +53,8 @@
       inset: 0;
       background: url("images/7fc449d2-1017-489f-a279-c8e569c78174.png") center/cover no-repeat;
       border-radius: 10px;
+      animation: fadeInSoft 0.6s 0.1s forwards;
+      opacity: 0;
     }
 
     /* Красная шапка + текст */
@@ -46,9 +71,12 @@
       color: #FFFFFF;
       font-size: 40px;
       letter-spacing: 1px;
+      animation: headerDown 0.5s 0.2s forwards;
+      transform: translateY(-100%);
+      z-index: 2;
     }
 
-    /* Орнаментная полоска сразу под шапкой */
+    /* Орнаментная полоска */
     .ornament {
       position: absolute;
       left: 0;
@@ -56,6 +84,11 @@
       width: 100%;
       height: 30px;
       background: url("images/4c26344a-041d-42f1-b65e-a7751d9c57ea.png") center/cover no-repeat;
+      animation: zoomInSoft 0.4s 0.35s forwards;
+      transform-origin: center;
+      transform: scaleX(0.8);
+      opacity: 0;
+      z-index: 2;
     }
 
     /* Логотип справа сверху */
@@ -66,21 +99,27 @@
       width: 74px;
       height: 93px;
       background: url("images/3e2504f6-73e0-48ec-90df-706b4fb349ec.png") center/contain no-repeat;
+      animation: zoomInSoft 0.4s 0.45s forwards;
+      transform-origin: center;
+      transform: scale(0.7);
+      opacity: 0;
+      z-index: 3;
     }
 
     /* Область содержимого под орнаментом */
     .content {
       position: absolute;
       left: 0;
-      top: 100px;      /* 70 + 30 */
+      top: 100px;
       width: 100%;
       height: calc(100% - 100px);
       display: grid;
-      grid-template-columns: 1.3fr 1fr 1fr;  /* левая колонка "Команда" + 2 колонки с цифрами */
+      grid-template-columns: 1.3fr 1fr 1fr;
       padding: 40px 80px;
       column-gap: 40px;
       color: #3F3F3E;
       font-size: 28px;
+      z-index: 3;
     }
 
     .col {
@@ -93,10 +132,14 @@
     .col-title-red {
       font-size: 40px;
       color: #DA291C;
+      animation: statIn 0.35s 0.5s forwards;
+      opacity: 0;
     }
 
     .col-title {
       font-size: 34px;
+      animation: statIn 0.35s 0.55s forwards;
+      opacity: 0;
     }
 
     .row-label {
@@ -110,6 +153,23 @@
     .value-red {
       color: #DA291C;
     }
+
+    /* Пошаговая анимация строк (имитируем Zoom Object1..4/Reveal) */
+    .row-label:nth-of-type(1),
+    #team1-shots,
+    #team2-shots { animation: statIn 0.35s 0.6s forwards; opacity: 0; }
+
+    .row-label:nth-of-type(2),
+    #team1-shots-on,
+    #team2-shots-on { animation: statIn 0.35s 0.7s forwards; opacity: 0; }
+
+    .row-label:nth-of-type(3),
+    #team1-faceoff,
+    #team2-faceoff { animation: statIn 0.35s 0.8s forwards; opacity: 0; }
+
+    .row-label:nth-of-type(4),
+    #team1-penalty,
+    #team2-penalty { animation: statIn 0.35s 0.9s forwards; opacity: 0; }
   </style>
 </head>
 <body>
@@ -136,4 +196,25 @@
       <!-- Центральная колонка (команда 1) -->
       <div class="col" id="team1-col">
         <div class="col-title" id="team1-name">ЦФО2008</div>
-        <div class="value"      id="
+        <div class="value"      id="team1-shots">5</div>
+        <div class="value-red"  id="team1-shots-on">10</div>
+        <div class="value"      id="team1-faceoff">5</div>
+        <div class="value"      id="team1-penalty">5</div>
+      </div>
+
+      <!-- Правая колонка (команда 2) -->
+      <div class="col" id="team2-col">
+        <div class="col-title" id="team2-name">ЦФО2008</div>
+        <div class="value"      id="team2-shots">10</div>
+        <div class="value"      id="team2-shots-on">5</div>
+        <div class="value"      id="team2-faceoff">5</div>
+        <div class="value"      id="team2-penalty">5</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // сюда потом можно подвязать обновление из API/Sheets
+  </script>
+</body>
+</html>
