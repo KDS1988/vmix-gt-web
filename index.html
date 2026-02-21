@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, initial-scale=1.0">
+    <title>vMix GT Stats Overlay</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet"> <!-- Bebas Neue [file:22] -->
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            margin: 0; padding: 0; background: transparent; 
+            font-family: 'Bebas Neue', sans-serif; font-weight: bold; 
+            width: 1920px; height: 1080px; overflow: hidden;
+        }
+        .container { position: relative; width: 1920px; height: 1080px; opacity: 0; animation: revealIn 1.2s cubic-bezier(0.25,0.46,0.45,0.94) forwards; } /* Storyboard in [file:22] */
+        @keyframes revealIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .bg-rect { position: absolute; left: 331px; top: 205px; width: 1259px; height: 671px; background: #F6F6F6; border-radius: 20px; border: 1px solid #FFF; box-shadow: 0 0 10px rgba(0,0,0,0.1); } /* Rectangle [file:22] */
+        .bg-img { position: absolute; left: 33px; top: 354px; width: 1887px; height: 726px; opacity: 0.5; background: url('9176ffc9-a656-4b78-81e9-31b5ecf590b2.png') no-repeat center/cover; animation: fadeIn 0.7s 0.3s cubic-bezier(0.25,0.46,0.45,0.94) forwards; } /* Image [file:22] */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 0.5; } }
+        .line-img { position: absolute; left: 318px; top: 319px; width: 2373px; height: 33px; background: url('584d862a-4a9f-4d64-b2b3-622e4b42e863.png'); opacity: 0; animation: zoomIn 0.5s 0.5s cubic-bezier(0.25,0.46,0.45,0.94) forwards; } /* Divider [file:22] */
+        @keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .header-rect-left { position: absolute; left: 240px; top: 203px; width: 1417px; height: 116px; background: #DA291C; border: 1px solid #FFF; animation: slideDown 0.5s 0.3s forwards; transform: translateY(-100%); } /* Красный заголовок [file:22] */
+        @keyframes slideDown { to { transform: translateY(0); } }
+        /* Левая колонка (команда 1) */
+        .team1-name { position: absolute; left: 968px; top: 391px; width: 300px; height: 75px; font-size: 80px; color: #DA291C; text-align: center; line-height: 0.78; white-space: nowrap; animation: zoomLeft 0.5s 1s cubic-bezier(0.25,0.46,0.45,0.94) forwards; opacity: 0; transform: scale(0.8); }
+        .stat1-left { position: absolute; left: 976px; top: 493px; width: 284px; height: 46px; font-size: 50px; color: #3F3F3E; text-align: center; line-height: 1; animation: revealStat 0.5s 1.05s forwards; opacity: 0; }
+        .stat2-left { top: 591px; animation-delay: 1.15s; }
+        .stat3-left { top: 681px; animation-delay: 1.2s; }
+        .stat4-left { top: 778px; animation-delay: 1.3s; background: #DA291C; color: #FFF; } /* Акцент [file:22] */
+        @keyframes revealStat { to { opacity: 1; transform: translateY(0); } }
+        @keyframes zoomLeft { to { opacity: 1; transform: scale(1); } }
+        /* Правая колонка (команда 2) */
+        .team2-name { left: 1283px; top: 391px; color: #DA291C; animation: zoomRight 0.5s 0.5s cubic-bezier(0.25,0.46,0.45,0.94) forwards; opacity: 0; transform: scale(0.8); }
+        @keyframes zoomRight { to { opacity: 1; transform: scale(1); } }
+        .stat1-right { left: 1291px; top: 493px; font-size: 50px; color: #3F3F3E; animation: revealStat 0.5s 1.05s forwards; opacity: 0; }
+        .stat2-right { top: 591px; animation-delay: 1.15s; }
+        .stat3-right { top: 681px; animation-delay: 1.25s; }
+        .stat4-right { top: 778px; animation-delay: 1.35s; }
+        /* Верхние статы (центр) */
+        .global-stat1 { left: 347px; top: 493px; width: 597px; height: 46px; font-size: 50px; color: #3F3F3E; text-align: center; animation: fadeUp 0.5s 0.75s forwards; opacity: 0; transform: translateY(20px); }
+        .global-stat2 { top: 591px; animation-delay: 0.85s; }
+        .global-stat3 { top: 681px; animation-delay: 0.95s; }
+        .global-stat4 { top: 778px; animation-delay: 1.05s; }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+        /* Out анимация */
+        .out { animation: fadeOut 0.5s cubic-bezier(0.25,0.46,0.45,0.94) forwards !important; }
+        @keyframes fadeOut { to { opacity: 0; transform: scale(1.1) translateY(-50px); } }
+    </style>
+</head>
+<body>
+    <div class="container" id="graphic">
+        <div class="bg-img"></div>
+        <div class="bg-rect"></div>
+        <img src="line-img.png" class="line-img" alt="Divider"> <!-- 584d862a-... -->
+        <div class="header-rect-left"></div>
+        
+        <!-- Глобальные статы сверху -->
+        <div class="global-stat1" id="gstat1">Владение 52%</div>
+        <div class="global-stat2" id="gstat2">Удары 12</div>
+        <div class="global-stat3" id="gstat3">Удары в створ 5</div>
+        <div class="global-stat4" id="gstat4">Фолы 8</div>
+        
+        <!-- Левая команда -->
+        <div class="team1-name" id="team1">Динамо</div>
+        <div class="stat1-left" id="s1l">10</div>
+        <div class="stat2-left" id="s2l">4</div>
+        <div class="stat3-left" id="s3l">55%</div>
+        <div class="stat4-left" id="s4l">2</div>
+        
+        <!-- Правая команда -->
+        <div class="team2-name" id="team2">Спартак</div>
+        <div class="stat1-right" id="s1r">8</div>
+        <div class="stat2-right" id="s2r">3</div>
+        <div class="stat3-right" id="s3r">45%</div>
+        <div class="stat4-right" id="s4r">1</div>
+    </div>
+
+    <script>
+        // Динамическое обновление (Google Sheets / API)
+        async function updateStats() {
+            // Пример: fetch из Sheets (используйте ваш Apps Script endpoint)
+            const response = await fetch('YOUR_SHEETS_JSON_URL'); // e.g. https://script.google.com/.../exec?team1=...
+            const data = await response.json();
+            document.getElementById('team1').textContent = data.team1 || 'Команда 1';
+            document.getElementById('team2').textContent = data.team2 || 'Команда 2';
+            document.getElementById('s1l').textContent = data.shots1 || '0';
+            // ... аналогично для всех ID
+            // Перезапуск анимации
+            const graphic = document.getElementById('graphic');
+            graphic.classList.add('out');
+            setTimeout(() => {
+                graphic.classList.remove('out');
+                graphic.style.animation = 'none';
+                graphic.offsetHeight; // Trigger reflow
+                graphic.style.animation = 'revealIn 1.2s cubic-bezier(0.25,0.46,0.45,0.94) forwards';
+            }, 500);
+        }
+        updateStats(); // Init
+        setInterval(updateStats, 3000); // Update every 3s
+    </script>
+</body>
+</html>
