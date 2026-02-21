@@ -10,186 +10,81 @@
         body { 
             font-family: 'Bebas Neue', sans-serif; 
             width: 1920px; height: 1080px; overflow: hidden;
-            background: transparent; /* vMix overlay */
+            background: transparent;
         }
-        
-        /* КОНТЕЙНЕР С ТОЧНЫМИ АНИМАЦИЯМИ ИЗ STORYBOARD */
         #container {
             position: relative; width: 1920px; height: 1080px;
             opacity: 0; 
-            /* Storyboard In: Reveal + Zoom последовательность из document.xml */
             animation: revealIn 1.2s cubic-bezier(0.55,0.055,0.675,0.19) forwards;
         }
+        @keyframes revealIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
         
-        /* ТОЧНЫЕ АНИМАЦИИ ИЗ XML */
-        @keyframes revealIn {
-            0% { opacity: 0; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-        @keyframes zoomObject { /* Object1-42 из Storyboard */
-            0% { transform: scale(0.7); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes revealCenterY { /* Reveal Object CenterAxisY */
-            0% { clip-path: inset(0 0 100% 0); }
-            100% { clip-path: inset(0 0 0 0); }
-        }
-        @keyframes fadeOutGT { /* TransitionOut */
-            100% { opacity: 0; transform: translateY(-50px) scale(1.05); }
-        }
-        
-        /* ТОЧНЫЕ ЭЛЕМЕНТЫ ИЗ document.xml */
-        
-        /* Rectangle (331,205) 1259x671 #F6F6F6 radius 20px */
+        /* ТОЧНЫЕ ЭЛЕМЕНТЫ ИЗ XML с ВАШИМИ PNG */
         .bg-rect {
             position: absolute; left: 331px; top: 205px; width: 1259px; height: 671px;
             background: #F6F6F6; border-radius: 20px; border: 1px solid #FFF;
-            animation: revealCenterY 0.7s 0.3s cubic-bezier(0.55,0.055,0.675,0.19) forwards;
-            opacity: 0;
+            animation: revealIn 0.7s 0.3s forwards; opacity: 0;
         }
-        
-        /* Image (33,354) 1887x726 opacity 0.5 - ГЛАВНЫЙ ФОН */
         .main-bg {
             position: absolute; left: 33px; top: 354px; width: 1887px; height: 726px;
-            background: url('images/image.png') center/cover; opacity: 0.5;
-            animation: fadeIn 1s 0.4s forwards; opacity: 0;
+            background: url('images/325f549c-afec-907b-84be-c79f4c9c5e75.png') center/cover; 
+            opacity: 0.5; animation: fadeIn 1s 0.4s forwards; opacity: 0;
         }
         @keyframes fadeIn { to { opacity: 0.5; } }
-        
-        /* Image линия (318,319) 2373x33 */
         .line-divider {
             position: absolute; left: 318px; top: 319px; width: 2373px; height: 33px;
-            background: url('images/584d862a-4a9f-4d64-b2b3-622e4b42e863.png') center/contain;
-            animation: zoomObject 0.5s 0.5s cubic-bezier(0.55,0.055,0.675,0.19) forwards;
-            opacity: 0;
+            background: url('images/425f348e-70f4-b476-af5c-9b4e4b42e863.png') center/contain;
+            animation: zoomIn 0.5s 0.5s forwards; opacity: 0;
         }
-        
-        /* Красный Rectangle (240,203) 1417x116 #DA291C */
+        @keyframes zoomIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         .header-rect {
             position: absolute; left: 240px; top: 203px; width: 1417px; height: 116px;
             background: #DA291C; border: 1px solid #FFF;
             animation: slideDown 0.7s 0.2s forwards; transform: translateY(-100%);
         }
         @keyframes slideDown { to { transform: translateY(0); } }
-        
-        /* ЛОГО (1486,220) 63x84 */
         .logo {
             position: absolute; left: 1486px; top: 220px; width: 63px; height: 84px;
-            background: url('images/b373114f-945f-47b2-9950-de79231d89ef.png') center/contain;
-            animation: zoomObject 0.5s 0.6s forwards; opacity: 0;
+            background: url('images/74943044-1042-b459-756e-91727674.png') center/contain;
+            animation: zoomIn 0.5s 0.6s forwards; opacity: 0;
         }
         
-        /* ТЕКСТОВЫЕ БЛОКИ - ТОЧНЫЕ ПОЗИЦИИ ИЗ XML */
-        
-        /* Team1 Name (968,391) 300x75 Bebas Neue 80px #DA291C */
+        /* ТЕКСТОВЫЕ БЛОКИ - ТОЧНЫЕ ПОЗИЦИИ */
         .team1-name {
             position: absolute; left: 968px; top: 391px; width: 300px; height: 75px;
             font-size: 80px; font-weight: 700; color: #DA291C; text-align: center;
             line-height: 0.78; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            animation: zoomObject 0.5s 1s cubic-bezier(0.55,0.055,0.675,0.19) forwards;
-            opacity: 0; transform: scale(0.8);
+            animation: zoomIn 0.5s 1s forwards; opacity: 0; transform: scale(0.8);
         }
-        
-        /* Team2 Name (1283,391) */
         .team2-name {
             position: absolute; left: 1283px; top: 391px; width: 300px; height: 75px;
             font-size: 80px; font-weight: 700; color: #DA291C; text-align: center;
             line-height: 0.78; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            animation: zoomObject 0.5s 0.9s cubic-bezier(0.55,0.055,0.675,0.19) forwards;
-            opacity: 0; transform: scale(0.8);
+            animation: zoomIn 0.5s 0.9s forwards; opacity: 0; transform: scale(0.8);
         }
-        
-        /* Stats блоки 284x46 Bebas Neue 50px */
         .stats {
             position: absolute; width: 284px; height: 46px; font-size: 50px;
             font-weight: 700; text-align: center; line-height: 1; color: #3F3F3E;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3); opacity: 0;
         }
-        
-        /* Левая колонка stats */
         #s1l, #s2l, #s3l, #s4l { left: 976px; }
-        #s1l { top: 493px; animation: zoomObject 0.5s 1.05s forwards; }
-        #s2l { top: 591px; animation: zoomObject 0.5s 1.15s forwards; }
-        #s3l { top: 681px; animation: zoomObject 0.5s 1.25s forwards; }
-        #s4l { 
-            top: 778px; animation: zoomObject 0.5s 1.35s forwards;
-            background: #DA291C; color: #FFF; border-radius: 8px;
-        }
-        
-        /* Правая колонка */
         #s1r, #s2r, #s3r, #s4r { left: 1291px; }
-        #s1r { top: 493px; animation: zoomObject 0.5s 1.05s forwards; }
-        #s2r { top: 591px; animation: zoomObject 0.5s 1.15s forwards; }
-        #s3r { top: 681px; animation: zoomObject 0.5s 1.25s forwards; }
-        #s4r { top: 778px; animation: zoomObject 0.5s 1.35s forwards; }
-        
-        /* Глобальные статы (347px width 597px) */
+        #s1l { top: 493px; animation: zoomIn 0.5s 1.05s forwards; }
+        #s2l { top: 591px; animation: zoomIn 0.5s 1.15s forwards; }
+        #s3l { top: 681px; animation: zoomIn 0.5s 1.25s forwards; }
+        #s4l { top: 778px; animation: zoomIn 0.5s 1.35s forwards; background: #DA291C; color: #FFF; border-radius: 8px; }
+        #s1r { top: 493px; animation: zoomIn 0.5s 1.05s forwards; }
+        #s2r { top: 591px; animation: zoomIn 0.5s 1.15s forwards; }
+        #s3r { top: 681px; animation: zoomIn 0.5s 1.25s forwards; }
+        #s4r { top: 778px; animation: zoomIn 0.5s 1.35s forwards; background: #DA291C; color: #FFF; border-radius: 8px; }
         .global-stat {
             position: absolute; left: 347px; width: 597px; height: 46px;
             font-size: 50px; font-weight: 700; text-align: center; color: #3F3F3E;
             line-height: 1; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); opacity: 0;
         }
-        #gstat1 { top: 493px; animation: zoomObject 0.5s 0.75s forwards; }
-        #gstat2 { top: 591px; animation: zoomObject 0.5s 0.85s forwards; }
-        #gstat3 { top: 681px; animation: zoomObject 0.5s 0.95s forwards; }
-        #gstat4 { top: 778px; animation: zoomObject 0.5s 1.05s forwards; }
+        #gstat1 { top: 493px; animation: zoomIn 0.5s 0.75s forwards; }
+        #gstat2 { top: 591px; animation: zoomIn 0.5s 0.85s forwards; }
+        #gstat3 { top: 681px; animation: zoomIn 0.5s 0.95s forwards; }
+        #gstat4 { top: 778px; animation: zoomIn 0.5s 1.05s forwards; }
         
-        .fade-out { animation: fadeOutGT 0.7s forwards !important; }
-    </style>
-</head>
-<body>
-    <div id="container">
-        <!-- ЭЛЕМЕНТЫ В ПОРЯДКЕ Z-INDEX ИЗ GTZIP -->
-        <div class="main-bg"></div>
-        <img src="images/thumbnail.png" class="logo" alt="Logo">
-        <div class="bg-rect"></div>
-        <div class="header-rect"></div>
-        <div class="line-divider"></div>
-        
-        <!-- ГЛОБАЛЬНЫЕ СТАТЫ -->
-        <div class="global-stat" id="gstat1">Владение 52%</div>
-        <div class="global-stat" id="gstat2">Удары 12 - 8</div>
-        <div class="global-stat" id="gstat3">В створ 5 - 4</div>
-        <div class="global-stat" id="gstat4">Угловые 3 - 2</div>
-        
-        <!-- ЛЕВАЯ КОМАНДА -->
-        <div class="team1-name" id="team1">ДИНАМО</div>
-        <div class="stats" id="s1l">Удары 10</div>
-        <div class="stats" id="s2l">В створ 4</div>
-        <div class="stats" id="s3l">Владение 55%</div>
-        <div class="stats" id="s4l">Голы 2</div>
-        
-        <!-- ПРАВАЯ КОМАНДА -->
-        <div class="team2-name" id="team2">СПАРТАК</div>
-        <div class="stats" id="s1r">Удары 8</div>
-        <div class="stats" id="s2r">В створ 3</div>
-        <div class="stats" id="s3r">Владение 45%</div>
-        <div class="stats" id="s4r">Голы 1</div>
-    </div>
-
-    <script>
-        function updateStats(data = {}) {
-            const defaults = {
-                team1: 'ДИНАМО', team2: 'СПАРТАК',
-                gstat1: 'Владение 52%', gstat2: 'Удары 12-8', gstat3: 'В створ 5-4', gstat4: 'Угловые 3-2',
-                s1l: 'Удары 10', s2l: 'В створ 4', s3l: 'Владение 55%', s4l: 'Голы 2',
-                s1r: 'Удары 8', s2r: 'В створ 3', s3r: 'Владение 45%', s4r: 'Голы 1'
-            };
-            Object.assign(document.getElementById('team1'), {textContent: data.team1 || defaults.team1});
-            Object.assign(document.getElementById('team2'), {textContent: data.team2 || defaults.team2});
-            // ... остальные поля аналогично
-            
-            document.getElementById('container').classList.add('fade-out');
-            setTimeout(() => {
-                document.getElementById('container').classList.remove('fade-out');
-                document.getElementById('container').style.animation = 'none';
-                document.getElementById('container').offsetHeight;
-                document.getElementById('container').style.animation = 'revealIn 1.2s cubic-bezier(0.55,0.055,0.675,0.19) forwards';
-            }, 700);
-        }
-        
-        // Тест каждые 10 сек
-        setInterval(() => updateStats({s4l: 'Голы 3', s4r: 'Голы 2'}), 10000);
-    </script>
-</body>
-</html>
+        .fade-out { anima
