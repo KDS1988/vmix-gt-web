@@ -3,88 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1920, initial-scale=1.0">
-    <title>vMix GT Stats - Точный клон</title>
+    <title>vMix GT Stats</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
-            font-family: 'Bebas Neue', sans-serif; 
-            width: 1920px; height: 1080px; overflow: hidden;
-            background: transparent;
+            font-family: 'Bebas Neue', sans-serif; font-weight: 700;
+            width: 1920px; height: 1080px; overflow: hidden; background: transparent;
         }
+        
         #container {
             position: relative; width: 1920px; height: 1080px;
-            opacity: 0; 
-            animation: revealIn 1.2s cubic-bezier(0.55,0.055,0.675,0.19) forwards;
+            opacity: 0;
+            animation: containerIn 1.2s cubic-bezier(0.55,0.055,0.675,0.19) forwards;
         }
-        @keyframes revealIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
         
-        /* ТОЧНЫЕ ЭЛЕМЕНТЫ ИЗ XML с ВАШИМИ PNG */
+        /* ТОЧНЫЕ АНИМАЦИИ */
+        @keyframes containerIn { 
+            0% { opacity: 0; transform: scale(0.8); } 
+            100% { opacity: 1; transform: scale(1); } 
+        }
+        @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 0.5; } }
+        @keyframes zoomIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes slideDown { 0% { transform: translateY(-100%); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        @keyframes statIn { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+        
+        /* ТОЧНЫЕ ЭЛЕМЕНТЫ ИЗ DOCUMENT.XML */
+        
+        /* Rectangle: Location=331,205 Dimensions=1259,671 Radius=20 */
         .bg-rect {
             position: absolute; left: 331px; top: 205px; width: 1259px; height: 671px;
             background: #F6F6F6; border-radius: 20px; border: 1px solid #FFF;
-            animation: revealIn 0.7s 0.3s forwards; opacity: 0;
+            animation: fadeIn 0.8s 0.3s forwards; opacity: 0;
         }
+        
+        /* Image: Location=33,354 Dimensions=1887,726 Opacity=0.5 */
         .main-bg {
             position: absolute; left: 33px; top: 354px; width: 1887px; height: 726px;
-            background: url('images/325f549c-afec-907b-84be-c79f4c9c5e75.png') center/cover; 
-            opacity: 0.5; animation: fadeIn 1s 0.4s forwards; opacity: 0;
+            background-image: url('images/325f549c-afec-907b-84be-c79f4c9c5e75.png');
+            background-size: cover; background-position: center; opacity: 0;
+            animation: fadeIn 1s 0.2s forwards;
         }
-        @keyframes fadeIn { to { opacity: 0.5; } }
-        .line-divider {
-            position: absolute; left: 318px; top: 319px; width: 2373px; height: 33px;
-            background: url('images/425f348e-70f4-b476-af5c-9b4e4b42e863.png') center/contain;
-            animation: zoomIn 0.5s 0.5s forwards; opacity: 0;
-        }
-        @keyframes zoomIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        
+        /* Красный Rectangle: Location=240,203 Dimensions=1417,116 */
         .header-rect {
             position: absolute; left: 240px; top: 203px; width: 1417px; height: 116px;
             background: #DA291C; border: 1px solid #FFF;
-            animation: slideDown 0.7s 0.2s forwards; transform: translateY(-100%);
-        }
-        @keyframes slideDown { to { transform: translateY(0); } }
-        .logo {
-            position: absolute; left: 1486px; top: 220px; width: 63px; height: 84px;
-            background: url('images/74943044-1042-b459-756e-91727674.png') center/contain;
-            animation: zoomIn 0.5s 0.6s forwards; opacity: 0;
+            animation: slideDown 0.7s forwards;
         }
         
-        /* ТЕКСТОВЫЕ БЛОКИ - ТОЧНЫЕ ПОЗИЦИИ */
+        /* Линия: Location=318,319 Dimensions=2373,33 */
+        .line-divider {
+            position: absolute; left: 318px; top: 319px; width: 2373px; height: 33px;
+            background-image: url('images/425f348e-70f4-b476-af5c-9b4e4b42e863.png');
+            background-size: contain; background-repeat: no-repeat; background-position: center;
+            animation: zoomIn 0.6s 0.5s forwards; opacity: 0;
+        }
+        
+        /* Logo: Location=1486,220 Dimensions=63,84 */
+        .logo {
+            position: absolute; left: 1486px; top: 220px; width: 63px; height: 84px;
+            background-image: url('images/74943044-1042-b459-756e-91727674.png');
+            background-size: contain; background-repeat: no-repeat;
+            animation: zoomIn 0.5s 0.7s forwards; opacity: 0;
+        }
+        
+        /* Thumbnail logo */
+        .thumb-logo {
+            position: absolute; left: 1486px; top: 220px; width: 63px; height: 84px;
+            background-image: url('images/thumbnail.png');
+            background-size: contain; background-repeat: no-repeat;
+            animation: zoomIn 0.5s 0.8s forwards; opacity: 0;
+        }
+        
+        /* НАЗВАНИЯ КОМАНД */
         .team1-name {
             position: absolute; left: 968px; top: 391px; width: 300px; height: 75px;
-            font-size: 80px; font-weight: 700; color: #DA291C; text-align: center;
-            line-height: 0.78; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            animation: zoomIn 0.5s 1s forwards; opacity: 0; transform: scale(0.8);
+            font-size: 80px; color: #DA291C; text-align: center; line-height: 0.78;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7); animation: zoomIn 0.6s 1s forwards;
+            opacity: 0; transform: scale(0.9);
         }
         .team2-name {
             position: absolute; left: 1283px; top: 391px; width: 300px; height: 75px;
-            font-size: 80px; font-weight: 700; color: #DA291C; text-align: center;
-            line-height: 0.78; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            animation: zoomIn 0.5s 0.9s forwards; opacity: 0; transform: scale(0.8);
+            font-size: 80px; color: #DA291C; text-align: center; line-height: 0.78;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7); animation: zoomIn 0.6s 0.9s forwards;
+            opacity: 0; transform: scale(0.9);
         }
-        .stats {
-            position: absolute; width: 284px; height: 46px; font-size: 50px;
-            font-weight: 700; text-align: center; line-height: 1; color: #3F3F3E;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3); opacity: 0;
-        }
-        #s1l, #s2l, #s3l, #s4l { left: 976px; }
-        #s1r, #s2r, #s3r, #s4r { left: 1291px; }
-        #s1l { top: 493px; animation: zoomIn 0.5s 1.05s forwards; }
-        #s2l { top: 591px; animation: zoomIn 0.5s 1.15s forwards; }
-        #s3l { top: 681px; animation: zoomIn 0.5s 1.25s forwards; }
-        #s4l { top: 778px; animation: zoomIn 0.5s 1.35s forwards; background: #DA291C; color: #FFF; border-radius: 8px; }
-        #s1r { top: 493px; animation: zoomIn 0.5s 1.05s forwards; }
-        #s2r { top: 591px; animation: zoomIn 0.5s 1.15s forwards; }
-        #s3r { top: 681px; animation: zoomIn 0.5s 1.25s forwards; }
-        #s4r { top: 778px; animation: zoomIn 0.5s 1.35s forwards; background: #DA291C; color: #FFF; border-radius: 8px; }
-        .global-stat {
-            position: absolute; left: 347px; width: 597px; height: 46px;
-            font-size: 50px; font-weight: 700; text-align: center; color: #3F3F3E;
-            line-height: 1; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); opacity: 0;
-        }
-        #gstat1 { top: 493px; animation: zoomIn 0.5s 0.75s forwards; }
-        #gstat2 { top: 591px; animation: zoomIn 0.5s 0.85s forwards; }
-        #gstat3 { top: 681px; animation: zoomIn 0.5s 0.95s forwards; }
-        #gstat4 { top: 778px; animation: zoomIn 0.5s 1.05s forwards; }
         
-        .fade-out { anima
+        /* СТАТИСТИКА - ТОЧНЫЕ КООРДИНАТЫ */
+        .stats {
+            position: absolute; width: 284px; height: 46px; font-size: 50px; font-weight: 700;
+            text-align: center; line-height: 1; color: #3F3F3E; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        /* Левая колонка */
+        #s1l { left: 976px; top: 493px; animation: statIn 0.5s 1.05s forwards; opacity: 0; }
+        #s2l { left: 976px; top: 591px; animation: statIn 0.5s 1.15s forwards; opacity: 0; }
+        #s3l { left: 976px; top: 681px; animation: statIn 0.5s 1.25s forwards; opacity: 0; }
+        #s4l { 
+            left: 976px; top: 778px; animation: statIn 0.5s 1.35s forwards; opacity: 0;
+            background: #DA291C; color: #FFF; border-radius: 8px; padding-top: 4px;
+        }
+        
+        /* Правая колонка */
+        #s1r { left: 1291px; top: 493px; animation: statIn 0.5s 1.05s forwards; opacity: 0; }
+        #s2r { left: 1291px; top: 591px; animation: statIn 0.5s 1.15s forwards; opacity: 0; }
+        #s3r { left: 1291px; top: 681px; animation: statIn 0.5s 1.25s forwards; opacity: 0; }
+        #s4r { 
+            left: 1291px; top: 778px; animation: statIn 0.5s 1.35s forwards; opacity: 0;
+            background: #DA291C; color: #FFF; border-radius: 8px; padding-top: 4px;
+        }
+        
+        /* Глобальная статистика */
+        .global-stat {
+            position: absolute; left: 347px; width: 597px; height: 46px; font-size: 50px; font-weight: 700;
+            text-align: center; line-height: 1; color: #3F3F3E; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        #gstat1 { top: 493px; animation: statIn 0.5s 0.75s forwards; opacity: 0; }
+        #gstat2 { top: 591px; animation: statIn 0.5s 0.85s forwards; opacity: 0; }
+        #gstat3 { top: 681px; animation: statIn 0.5s 0.95s forwards; opacity: 0; }
+        #gstat4 { top: 778px; animation: statIn 0.5s 1.05s forwards; opacity: 0; }
+        
+        .fade-out { animation: fadeOut 0.7s forwards !important; }
+        @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.05) translateY(-30px); } }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <!-- СЛОИ В ПОРЯДКЕ Z-INDEX ИЗ GTZIP -->
+        <div class="main-bg"></div>
+        <div class="bg-rect"></div>
+        <div class="header-rect"></div>
+        <div class="line-divider"></div>
+        <div class="logo"></div>
+        <div class="thumb-logo"></div>
+        
+        <!-- ТЕКСТ -->
+        <div class="global-stat" id="gstat1">Владение 52%</div>
+        <div class="global-stat" id="gstat2">Удары 12 - 8</div>
+        <div class="global-stat" id="gstat3">В створ 5 - 4</div>
+        <div class="global-stat" id="gstat4">Угловые 3 - 2</div>
+        
+        <div class="team1-name" id="team1">ДИНАМО</div>
+        <div class="team2-name" id="team2">СПАРТАК</div>
+        
+        <div class="stats" id="s1l">Удары 10</div>
+        <div class="stats" id="s2l">В створ 4</div>
+        <div class="stats" id="s3l">Владение 55%</div>
+        <div class="s
