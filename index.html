@@ -18,106 +18,101 @@
             animation: containerIn 1.2s cubic-bezier(0.55,0.055,0.675,0.19) forwards;
         }
         
-        /* ТОЧНЫЕ АНИМАЦИИ */
-        @keyframes containerIn { 
-            0% { opacity: 0; transform: scale(0.8); } 
-            100% { opacity: 1; transform: scale(1); } 
-        }
+        @keyframes containerIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
         @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 0.5; } }
         @keyframes zoomIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
         @keyframes slideDown { 0% { transform: translateY(-100%); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
         @keyframes statIn { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
         
-        /* ТОЧНЫЕ ЭЛЕМЕНТЫ ИЗ DOCUMENT.XML */
+        /* ✅ ПРАВИЛЬНЫЙ ПОРЯДОК Z-INDEX ИЗ GTZIP */
         
-        /* Rectangle: Location=331,205 Dimensions=1259,671 Radius=20 */
-        .bg-rect {
-            position: absolute; left: 331px; top: 205px; width: 1259px; height: 671px;
-            background: #F6F6F6; border-radius: 20px; border: 1px solid #FFF;
-            animation: fadeIn 0.8s 0.3s forwards; opacity: 0;
-        }
-        
-        /* Image: Location=33,354 Dimensions=1887,726 Opacity=0.5 */
+        /* 1. ГЛАВНЫЙ ФОН (33,354) 1887x726 opacity 0.5 */
         .main-bg {
             position: absolute; left: 33px; top: 354px; width: 1887px; height: 726px;
             background-image: url('images/325f549c-afec-907b-84be-c79f4c9c5e75.png');
-            background-size: cover; background-position: center; opacity: 0;
-            animation: fadeIn 1s 0.2s forwards;
+            background-size: cover; background-position: center; 
+            z-index: 1;
+            animation: fadeIn 1s 0.2s forwards; opacity: 0;
         }
         
-        /* Красный Rectangle: Location=240,203 Dimensions=1417,116 */
+        /* 2. ОСНОВНОЙ РЕКТАНГЛЬ (331,205) 1259x671 */
+        .bg-rect {
+            position: absolute; left: 331px; top: 205px; width: 1259px; height: 671px;
+            background: #F6F6F6; border-radius: 20px; border: 1px solid #FFF;
+            z-index: 2;
+            animation: fadeIn 0.8s 0.3s forwards; opacity: 0;
+        }
+        
+        /* 3. КРАСНЫЙ ЗАГОЛОВОК (240,203) 1417x116 */
         .header-rect {
             position: absolute; left: 240px; top: 203px; width: 1417px; height: 116px;
             background: #DA291C; border: 1px solid #FFF;
+            z-index: 3;
             animation: slideDown 0.7s forwards;
         }
         
-        /* Линия: Location=318,319 Dimensions=2373,33 */
+        /* 4. ЛИНИЯ РАЗДЕЛИТЕЛЬ (318,319) 2373x33 */
         .line-divider {
             position: absolute; left: 318px; top: 319px; width: 2373px; height: 33px;
             background-image: url('images/425f348e-70f4-b476-af5c-9b4e4b42e863.png');
             background-size: contain; background-repeat: no-repeat; background-position: center;
+            z-index: 4;
             animation: zoomIn 0.6s 0.5s forwards; opacity: 0;
         }
         
-        /* Logo: Location=1486,220 Dimensions=63,84 */
-        .logo {
+        /* 5. ЛОГОТИПЫ - НАВЕРХ ВСЕГО */
+        .logos {
             position: absolute; left: 1486px; top: 220px; width: 63px; height: 84px;
+            z-index: 10;
+        }
+        .logo-main {
             background-image: url('images/74943044-1042-b459-756e-91727674.png');
             background-size: contain; background-repeat: no-repeat;
             animation: zoomIn 0.5s 0.7s forwards; opacity: 0;
         }
-        
-        /* Thumbnail logo */
         .thumb-logo {
-            position: absolute; left: 1486px; top: 220px; width: 63px; height: 84px;
             background-image: url('images/thumbnail.png');
             background-size: contain; background-repeat: no-repeat;
             animation: zoomIn 0.5s 0.8s forwards; opacity: 0;
         }
         
-        /* НАЗВАНИЯ КОМАНД */
+        /* ТЕКСТОВЫЕ ЭЛЕМЕНТЫ - НАВЕРХ */
+        .team1-name, .team2-name, .stats, .global-stat {
+            z-index: 20;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+        
+        /* КОМАНДЫ */
         .team1-name {
             position: absolute; left: 968px; top: 391px; width: 300px; height: 75px;
             font-size: 80px; color: #DA291C; text-align: center; line-height: 0.78;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7); animation: zoomIn 0.6s 1s forwards;
-            opacity: 0; transform: scale(0.9);
+            animation: zoomIn 0.6s 1s forwards; opacity: 0; transform: scale(0.9);
         }
         .team2-name {
             position: absolute; left: 1283px; top: 391px; width: 300px; height: 75px;
             font-size: 80px; color: #DA291C; text-align: center; line-height: 0.78;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7); animation: zoomIn 0.6s 0.9s forwards;
-            opacity: 0; transform: scale(0.9);
+            animation: zoomIn 0.6s 0.9s forwards; opacity: 0; transform: scale(0.9);
         }
         
-        /* СТАТИСТИКА - ТОЧНЫЕ КООРДИНАТЫ */
+        /* СТАТИСТИКА */
         .stats {
             position: absolute; width: 284px; height: 46px; font-size: 50px; font-weight: 700;
-            text-align: center; line-height: 1; color: #3F3F3E; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            text-align: center; line-height: 1; color: #3F3F3E;
         }
-        
-        /* Левая колонка */
         #s1l { left: 976px; top: 493px; animation: statIn 0.5s 1.05s forwards; opacity: 0; }
         #s2l { left: 976px; top: 591px; animation: statIn 0.5s 1.15s forwards; opacity: 0; }
         #s3l { left: 976px; top: 681px; animation: statIn 0.5s 1.25s forwards; opacity: 0; }
-        #s4l { 
-            left: 976px; top: 778px; animation: statIn 0.5s 1.35s forwards; opacity: 0;
-            background: #DA291C; color: #FFF; border-radius: 8px; padding-top: 4px;
-        }
+        #s4l { left: 976px; top: 778px; animation: statIn 0.5s 1.35s forwards; opacity: 0; background: #DA291C; color: #FFF; border-radius: 8px; padding-top: 4px; }
         
-        /* Правая колонка */
         #s1r { left: 1291px; top: 493px; animation: statIn 0.5s 1.05s forwards; opacity: 0; }
         #s2r { left: 1291px; top: 591px; animation: statIn 0.5s 1.15s forwards; opacity: 0; }
         #s3r { left: 1291px; top: 681px; animation: statIn 0.5s 1.25s forwards; opacity: 0; }
-        #s4r { 
-            left: 1291px; top: 778px; animation: statIn 0.5s 1.35s forwards; opacity: 0;
-            background: #DA291C; color: #FFF; border-radius: 8px; padding-top: 4px;
-        }
+        #s4r { left: 1291px; top: 778px; animation: statIn 0.5s 1.35s forwards; opacity: 0; background: #DA291C; color: #FFF; border-radius: 8px; padding-top: 4px; }
         
-        /* Глобальная статистика */
+        /* ГЛОБАЛЬНАЯ СТАТИСТИКА */
         .global-stat {
             position: absolute; left: 347px; width: 597px; height: 46px; font-size: 50px; font-weight: 700;
-            text-align: center; line-height: 1; color: #3F3F3E; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            text-align: center; line-height: 1; color: #3F3F3E;
         }
         #gstat1 { top: 493px; animation: statIn 0.5s 0.75s forwards; opacity: 0; }
         #gstat2 { top: 591px; animation: statIn 0.5s 0.85s forwards; opacity: 0; }
@@ -125,20 +120,22 @@
         #gstat4 { top: 778px; animation: statIn 0.5s 1.05s forwards; opacity: 0; }
         
         .fade-out { animation: fadeOut 0.7s forwards !important; }
-        @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.05) translateY(-30px); } }
+        @keyframes fadeOut { 100% { opacity: 0; transform: scale(1.05) translateY(-30px); } }
     </style>
 </head>
 <body>
     <div id="container">
-        <!-- СЛОИ В ПОРЯДКЕ Z-INDEX ИЗ GTZIP -->
+        <!-- ✅ PRAWIL'NYI PORQADOK SLOYOW -->
         <div class="main-bg"></div>
         <div class="bg-rect"></div>
         <div class="header-rect"></div>
         <div class="line-divider"></div>
-        <div class="logo"></div>
-        <div class="thumb-logo"></div>
         
-        <!-- ТЕКСТ -->
+        <!-- ✅ LOGOTIPY OTDельно НАВЕРХ -->
+        <div class="logos logo-main"></div>
+        <div class="logos thumb-logo"></div>
+        
+        <!-- ТЕКСТ НАВЕРХ -->
         <div class="global-stat" id="gstat1">Владение 52%</div>
         <div class="global-stat" id="gstat2">Удары 12 - 8</div>
         <div class="global-stat" id="gstat3">В створ 5 - 4</div>
@@ -150,4 +147,40 @@
         <div class="stats" id="s1l">Удары 10</div>
         <div class="stats" id="s2l">В створ 4</div>
         <div class="stats" id="s3l">Владение 55%</div>
-        <div class="s
+        <div class="stats" id="s4l">Голы 2</div>
+        
+        <div class="stats" id="s1r">Удары 8</div>
+        <div class="stats" id="s2r">В створ 3</div>
+        <div class="stats" id="s3r">Владение 45%</div>
+        <div class="stats" id="s4r">Голы 1</div>
+    </div>
+
+    <script>
+        function updateStats(data = {}) {
+            const defaults = {
+                team1: 'ДИНАМО', team2: 'СПАРТАК',
+                gstat1: 'Владение 52%', gstat2: 'Удары 12-8', gstat3: 'В створ 5-4', gstat4: 'Угловые 3-2',
+                s1l: 'Удары 10', s2l: 'В створ 4', s3l: 'Владение 55%', s4l: 'Голы 2',
+                s1r: 'Удары 8', s2r: 'В створ 3', s3r: 'Владение 45%', s4r: 'Голы 1'
+            };
+            const stats = {...defaults, ...data};
+            
+            ['team1','team2','gstat1','gstat2','gstat3','gstat4','s1l','s2l','s3l','s4l','s1r','s2r','s3r','s4r'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = stats[id];
+            });
+            
+            const container = document.getElementById('container');
+            container.classList.add('fade-out');
+            setTimeout(() => {
+                container.classList.remove('fade-out');
+                container.style.animation = 'none';
+                container.offsetHeight;
+                container.style.animation = 'containerIn 1.2s cubic-bezier(0.55,0.055,0.675,0.19) forwards';
+            }, 700);
+        }
+        
+        setTimeout(() => updateStats({s4l: 'Голы 3', s4r: 'Голы 2'}), 10000);
+    </script>
+</body>
+</html>
