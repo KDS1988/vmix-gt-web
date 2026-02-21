@@ -1,186 +1,139 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=1920, initial-scale=1.0">
-    <title>vMix GT Stats</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            font-family: 'Bebas Neue', sans-serif; font-weight: 700;
-            width: 1920px; height: 1080px; overflow: hidden; background: transparent;
-        }
-        
-        #container {
-            position: relative; width: 1920px; height: 1080px;
-            opacity: 0;
-            animation: containerIn 1.2s cubic-bezier(0.55,0.055,0.675,0.19) forwards;
-        }
-        
-        @keyframes containerIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
-        @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 0.5; } }
-        @keyframes zoomIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
-        @keyframes slideDown { 0% { transform: translateY(-100%); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
-        @keyframes statIn { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
-        
-        /* ✅ ПРАВИЛЬНЫЙ ПОРЯДОК Z-INDEX ИЗ GTZIP */
-        
-        /* 1. ГЛАВНЫЙ ФОН (33,354) 1887x726 opacity 0.5 */
-        .main-bg {
-            position: absolute; left: 33px; top: 354px; width: 1887px; height: 726px;
-            background-image: url('images/325f549c-afec-907b-84be-c79f4c9c5e75.png');
-            background-size: cover; background-position: center; 
-            z-index: 1;
-            animation: fadeIn 1s 0.2s forwards; opacity: 0;
-        }
-        
-        /* 2. ОСНОВНОЙ РЕКТАНГЛЬ (331,205) 1259x671 */
-        .bg-rect {
-            position: absolute; left: 331px; top: 205px; width: 1259px; height: 671px;
-            background: #F6F6F6; border-radius: 20px; border: 1px solid #FFF;
-            z-index: 2;
-            animation: fadeIn 0.8s 0.3s forwards; opacity: 0;
-        }
-        
-        /* 3. КРАСНЫЙ ЗАГОЛОВОК (240,203) 1417x116 */
-        .header-rect {
-            position: absolute; left: 240px; top: 203px; width: 1417px; height: 116px;
-            background: #DA291C; border: 1px solid #FFF;
-            z-index: 3;
-            animation: slideDown 0.7s forwards;
-        }
-        
-        /* 4. ЛИНИЯ РАЗДЕЛИТЕЛЬ (318,319) 2373x33 */
-        .line-divider {
-            position: absolute; left: 318px; top: 319px; width: 2373px; height: 33px;
-            background-image: url('images/425f348e-70f4-b476-af5c-9b4e4b42e863.png');
-            background-size: contain; background-repeat: no-repeat; background-position: center;
-            z-index: 4;
-            animation: zoomIn 0.6s 0.5s forwards; opacity: 0;
-        }
-        
-        /* 5. ЛОГОТИПЫ - НАВЕРХ ВСЕГО */
-        .logos {
-            position: absolute; left: 1486px; top: 220px; width: 63px; height: 84px;
-            z-index: 10;
-        }
-        .logo-main {
-            background-image: url('images/74943044-1042-b459-756e-91727674.png');
-            background-size: contain; background-repeat: no-repeat;
-            animation: zoomIn 0.5s 0.7s forwards; opacity: 0;
-        }
-        .thumb-logo {
-            background-image: url('images/thumbnail.png');
-            background-size: contain; background-repeat: no-repeat;
-            animation: zoomIn 0.5s 0.8s forwards; opacity: 0;
-        }
-        
-        /* ТЕКСТОВЫЕ ЭЛЕМЕНТЫ - НАВЕРХ */
-        .team1-name, .team2-name, .stats, .global-stat {
-            z-index: 20;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-        }
-        
-        /* КОМАНДЫ */
-        .team1-name {
-            position: absolute; left: 968px; top: 391px; width: 300px; height: 75px;
-            font-size: 80px; color: #DA291C; text-align: center; line-height: 0.78;
-            animation: zoomIn 0.6s 1s forwards; opacity: 0; transform: scale(0.9);
-        }
-        .team2-name {
-            position: absolute; left: 1283px; top: 391px; width: 300px; height: 75px;
-            font-size: 80px; color: #DA291C; text-align: center; line-height: 0.78;
-            animation: zoomIn 0.6s 0.9s forwards; opacity: 0; transform: scale(0.9);
-        }
-        
-        /* СТАТИСТИКА */
-        .stats {
-            position: absolute; width: 284px; height: 46px; font-size: 50px; font-weight: 700;
-            text-align: center; line-height: 1; color: #3F3F3E;
-        }
-        #s1l { left: 976px; top: 493px; animation: statIn 0.5s 1.05s forwards; opacity: 0; }
-        #s2l { left: 976px; top: 591px; animation: statIn 0.5s 1.15s forwards; opacity: 0; }
-        #s3l { left: 976px; top: 681px; animation: statIn 0.5s 1.25s forwards; opacity: 0; }
-        #s4l { left: 976px; top: 778px; animation: statIn 0.5s 1.35s forwards; opacity: 0; background: #DA291C; color: #FFF; border-radius: 8px; padding-top: 4px; }
-        
-        #s1r { left: 1291px; top: 493px; animation: statIn 0.5s 1.05s forwards; opacity: 0; }
-        #s2r { left: 1291px; top: 591px; animation: statIn 0.5s 1.15s forwards; opacity: 0; }
-        #s3r { left: 1291px; top: 681px; animation: statIn 0.5s 1.25s forwards; opacity: 0; }
-        #s4r { left: 1291px; top: 778px; animation: statIn 0.5s 1.35s forwards; opacity: 0; background: #DA291C; color: #FFF; border-radius: 8px; padding-top: 4px; }
-        
-        /* ГЛОБАЛЬНАЯ СТАТИСТИКА */
-        .global-stat {
-            position: absolute; left: 347px; width: 597px; height: 46px; font-size: 50px; font-weight: 700;
-            text-align: center; line-height: 1; color: #3F3F3E;
-        }
-        #gstat1 { top: 493px; animation: statIn 0.5s 0.75s forwards; opacity: 0; }
-        #gstat2 { top: 591px; animation: statIn 0.5s 0.85s forwards; opacity: 0; }
-        #gstat3 { top: 681px; animation: statIn 0.5s 0.95s forwards; opacity: 0; }
-        #gstat4 { top: 778px; animation: statIn 0.5s 1.05s forwards; opacity: 0; }
-        
-        .fade-out { animation: fadeOut 0.7s forwards !important; }
-        @keyframes fadeOut { 100% { opacity: 0; transform: scale(1.05) translateY(-30px); } }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1920, initial-scale=1.0">
+  <title>Статистика матча</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: transparent;
+      font-family: 'Bebas Neue', Arial, sans-serif;
+    }
+
+    /* Весь блок как на thumbnail */
+    .wrap {
+      position: absolute;
+      left: 260px;   /* подгон по thumbnail; можно слегка скорректировать */
+      top: 260px;
+      width: 1400px;
+      height: 360px;
+    }
+
+    /* Фон таблицы из 7fc4... */
+    .bg {
+      position: absolute;
+      inset: 0;
+      background: url("images/7fc449d2-1017-489f-a279-c8e569c78174.png") center/cover no-repeat;
+      border-radius: 10px;
+    }
+
+    /* Красная шапка + текст */
+    .header {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 70px;
+      background: #DA291C;
+      display: flex;
+      align-items: center;
+      padding: 0 30px;
+      color: #FFFFFF;
+      font-size: 40px;
+      letter-spacing: 1px;
+    }
+
+    /* Орнаментная полоска сразу под шапкой */
+    .ornament {
+      position: absolute;
+      left: 0;
+      top: 70px;
+      width: 100%;
+      height: 30px;
+      background: url("images/4c26344a-041d-42f1-b65e-a7751d9c57ea.png") center/cover no-repeat;
+    }
+
+    /* Логотип справа сверху */
+    .logo {
+      position: absolute;
+      right: 30px;
+      top: 12px;
+      width: 74px;
+      height: 93px;
+      background: url("images/3e2504f6-73e0-48ec-90df-706b4fb349ec.png") center/contain no-repeat;
+    }
+
+    /* Область содержимого под орнаментом */
+    .content {
+      position: absolute;
+      left: 0;
+      top: 100px;      /* 70 + 30 */
+      width: 100%;
+      height: calc(100% - 100px);
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;  /* левая колонка "Команда" + 2 колонки с цифрами */
+      padding: 40px 80px;
+      column-gap: 40px;
+      color: #3F3F3E;
+      font-size: 28px;
+    }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      row-gap: 16px;
+    }
+
+    .col-title-red {
+      font-size: 40px;
+      color: #DA291C;
+    }
+
+    .col-title {
+      font-size: 34px;
+    }
+
+    .row-label {
+      font-size: 30px;
+    }
+
+    .value {
+      font-size: 30px;
+    }
+
+    .value-red {
+      color: #DA291C;
+    }
+  </style>
 </head>
 <body>
-    <div id="container">
-        <!-- ✅ PRAWIL'NYI PORQADOK SLOYOW -->
-        <div class="main-bg"></div>
-        <div class="bg-rect"></div>
-        <div class="header-rect"></div>
-        <div class="line-divider"></div>
-        
-        <!-- ✅ LOGOTIPY OTDельно НАВЕРХ -->
-        <div class="logos logo-main"></div>
-        <div class="logos thumb-logo"></div>
-        
-        <!-- ТЕКСТ НАВЕРХ -->
-        <div class="global-stat" id="gstat1">Владение 52%</div>
-        <div class="global-stat" id="gstat2">Удары 12 - 8</div>
-        <div class="global-stat" id="gstat3">В створ 5 - 4</div>
-        <div class="global-stat" id="gstat4">Угловые 3 - 2</div>
-        
-        <div class="team1-name" id="team1">ДИНАМО</div>
-        <div class="team2-name" id="team2">СПАРТАК</div>
-        
-        <div class="stats" id="s1l">Удары 10</div>
-        <div class="stats" id="s2l">В створ 4</div>
-        <div class="stats" id="s3l">Владение 55%</div>
-        <div class="stats" id="s4l">Голы 2</div>
-        
-        <div class="stats" id="s1r">Удары 8</div>
-        <div class="stats" id="s2r">В створ 3</div>
-        <div class="stats" id="s3r">Владение 45%</div>
-        <div class="stats" id="s4r">Голы 1</div>
+  <div class="wrap">
+    <div class="bg"></div>
+
+    <div class="header">
+      <span>СТАТИСТИКА МАТЧА ПОСЛЕ 1 ПЕРИОДА</span>
+      <div class="logo"></div>
     </div>
 
-    <script>
-        function updateStats(data = {}) {
-            const defaults = {
-                team1: 'ДИНАМО', team2: 'СПАРТАК',
-                gstat1: 'Владение 52%', gstat2: 'Удары 12-8', gstat3: 'В створ 5-4', gstat4: 'Угловые 3-2',
-                s1l: 'Удары 10', s2l: 'В створ 4', s3l: 'Владение 55%', s4l: 'Голы 2',
-                s1r: 'Удары 8', s2r: 'В створ 3', s3r: 'Владение 45%', s4r: 'Голы 1'
-            };
-            const stats = {...defaults, ...data};
-            
-            ['team1','team2','gstat1','gstat2','gstat3','gstat4','s1l','s2l','s3l','s4l','s1r','s2r','s3r','s4r'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.textContent = stats[id];
-            });
-            
-            const container = document.getElementById('container');
-            container.classList.add('fade-out');
-            setTimeout(() => {
-                container.classList.remove('fade-out');
-                container.style.animation = 'none';
-                container.offsetHeight;
-                container.style.animation = 'containerIn 1.2s cubic-bezier(0.55,0.055,0.675,0.19) forwards';
-            }, 700);
-        }
-        
-        setTimeout(() => updateStats({s4l: 'Голы 3', s4r: 'Голы 2'}), 10000);
-    </script>
-</body>
-</html>
+    <div class="ornament"></div>
+
+    <div class="content">
+      <!-- Левая колонка с названиями параметров -->
+      <div class="col">
+        <div class="col-title-red">КОМАНДА</div>
+        <div class="row-label">БРОСКИ</div>
+        <div class="row-label">БРОСКИ В СТВОР</div>
+        <div class="row-label">ВБРАСЫВАНИЯ</div>
+        <div class="row-label">ШТРАФНЫЕ МИНУТЫ</div>
+      </div>
+
+      <!-- Центральная колонка (команда 1) -->
+      <div class="col" id="team1-col">
+        <div class="col-title" id="team1-name">ЦФО2008</div>
+        <div class="value"      id="
