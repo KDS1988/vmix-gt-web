@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Title Layer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      width:1920px;height:1080px;
+      background:transparent;
+      overflow:hidden;
+      font-family:'Bebas Neue',Arial,sans-serif;
+    }
+    .wrap{
+      position:absolute;
+      left:260px;top:140px;
+      width:1400px;height:360px;
+      opacity:0;transform:translateY(40px) scale(0.96);
+      transition:opacity .4s ease-out,transform .4s ease-out;
+    }
+    .wrap.visible{opacity:1;transform:translateY(0) scale(1);}
+    .bg{position:absolute;inset:0;
+        background:url("images/7fc449d2-1017-489f-a279-c8e569c78174.png") center/cover no-repeat;
+        border-radius:10px}
+    .header{position:absolute;left:0;top:0;width:100%;height:70px;
+        background:#DA291C;color:#fff;display:flex;align-items:center;
+        padding:0 30px;font-size:40px}
+    .logo{margin-left:auto;width:74px;height:93px;
+        background:url("images/3e2504f6-73e0-48ec-90df-706b4fb349ec.png") center/contain no-repeat}
+    .ornament{position:absolute;left:0;top:70px;width:100%;height:30px;
+        background:url("images/4c26344a-041d-42f1-b65e-a7751d9c57ea.png") center/cover no-repeat}
+    .content{position:absolute;left:0;top:100px;width:100%;height:calc(100% - 100px);
+        display:grid;grid-template-columns:1.3fr 1fr 1fr;padding:40px 80px;
+        column-gap:40px;font-size:28px;color:#3F3F3E}
+    .col{display:flex;flex-direction:column;row-gap:16px}
+    .col-title-red{font-size:40px;color:#DA291C}
+    .col-title{font-size:34px}
+    .row-label{font-size:30px}
+    .value{font-size:30px}
+    .value-red{font-size:30px;color:#DA291C}
+  </style>
+</head>
+<body>
+  <div class="wrap" id="title">
+    <div class="bg"></div>
+    <div class="header">
+      <span>СТАТИСТИКА МАТЧА ПОСЛЕ 1 ПЕРИОДА</span>
+      <div class="logo"></div>
+    </div>
+    <div class="ornament"></div>
+    <div class="content">
+      <div class="col">
+        <div class="col-title-red">КОМАНДА</div>
+        <div class="row-label">БРОСКИ</div>
+        <div class="row-label">БРОСКИ В СТВОР</div>
+        <div class="row-label">ВБРАСЫВАНИЯ</div>
+        <div class="row-label">ШТРАФНЫЕ МИНУТЫ</div>
+      </div>
+      <div class="col">
+        <div class="col-title" id="team1-name">КОМАНДА 1</div>
+        <div class="value"     id="t1-shots">0</div>
+        <div class="value-red" id="t1-on">0</div>
+        <div class="value"     id="t1-faceoff">0</div>
+        <div class="value"     id="t1-pen">0</div>
+      </div>
+      <div class="col">
+        <div class="col-title" id="team2-name">КОМАНДА 2</div>
+        <div class="value"     id="t2-shots">0</div>
+        <div class="value-red" id="t2-on">0</div>
+        <div class="value"     id="t2-faceoff">0</div>
+        <div class="value"     id="t2-pen">0</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const p = new URLSearchParams(location.search);
+
+    const title = document.getElementById('title');
+    if (p.get('show') === '1') {
+      title.classList.add('visible');
+    }
+
+    function setText(id, key) {
+      const el = document.getElementById(id);
+      const v = p.get(key);
+      if (el && v !== null) el.textContent = v;
+    }
+
+    setText('team1-name','t1name');
+    setText('team2-name','t2name');
+    setText('t1-shots','t1s');
+    setText('t2-shots','t2s');
+    setText('t1-on','t1on');
+    setText('t2-on','t2on');
+    setText('t1-faceoff','t1f');
+    setText('t2-faceoff','t2f');
+    setText('t1-pen','t1p');
+    setText('t2-pen','t2p');
+  </script>
+</body>
+</html>
