@@ -76,4 +76,321 @@
       height: 30px;
       background: url("images/4c26344a-041d-42f1-b65e-a7751d9c57ea.png") center/cover no-repeat;
     }
-    .conte
+    .content {
+      position: absolute;
+      left: 0;
+      top: 100px;
+      width: 100%;
+      height: calc(100% - 100px);
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      padding: 40px 80px;
+      column-gap: 40px;
+      font-size: 28px;
+    }
+    .col {
+      display: flex;
+      flex-direction: column;
+      row-gap: 16px;
+    }
+    .col-title-red { font-size: 40px; color: #DA291C; }
+    .col-title     { font-size: 34px; }
+    .row-label     { font-size: 30px; }
+    .value         { font-size: 30px; }
+    .value-red     { font-size: 30px; color: #DA291C; }
+
+    /* НИЗ: панель управления оператора */
+    .controls {
+      flex: 1;
+      background: #111;
+      color: #eee;
+      padding: 12px 24px 24px;
+      font-size: 18px;
+    }
+    .controls-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .field {
+      background: #222;
+      padding: 8px 10px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .field-label {
+      min-width: 180px;
+    }
+    .team-label {
+      width: 80px;
+      text-align: center;
+      font-weight: 700;
+      color: #ffec99;
+    }
+    .btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 700;
+      background: #444;
+      color: #fff;
+    }
+    .btn:hover { background: #666; }
+    .value-box {
+      min-width: 36px;
+      text-align: center;
+      font-size: 20px;
+    }
+
+    /* Кнопка показа титра */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .toggle-btn {
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 700;
+      background: #2f9e44;
+      color: #fff;
+    }
+    .toggle-btn.off {
+      background: #c92a2a;
+    }
+    .link-box {
+      font-size: 14px;
+      color: #ccc;
+    }
+    .link-url {
+      font-family: monospace;
+      padding: 2px 6px;
+      background: #222;
+      border-radius: 4px;
+    }
+
+    .team-input {
+      width: 200px;
+      padding: 3px 6px;
+      border-radius: 4px;
+      border: 1px solid #555;
+      background: #000;
+      color: #fff;
+      font-family: inherit;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <!-- ВЕРХ: мастер-титр -->
+  <div class="master">
+    <div class="wrap" id="title-wrap">
+      <div class="bg"></div>
+      <div class="header">
+        <span>СТАТИСТИКА МАТЧА ПОСЛЕ 1 ПЕРИОДА</span>
+        <div class="logo"></div>
+      </div>
+      <div class="ornament"></div>
+
+      <div class="content">
+        <!-- Левая колонка — названия параметров -->
+        <div class="col">
+          <div class="col-title-red">КОМАНДА</div>
+          <div class="row-label">БРОСКИ</div>
+          <div class="row-label">БРОСКИ В СТВОР</div>
+          <div class="row-label">ВБРАСЫВАНИЯ</div>
+          <div class="row-label">ШТРАФНЫЕ МИНУТЫ</div>
+        </div>
+
+        <!-- Команда 1 -->
+        <div class="col">
+          <div class="col-title" id="team1-name">КОМАНДА 1</div>
+          <div class="value"     id="t1-shots">0</div>
+          <div class="value-red" id="t1-on">0</div>
+          <div class="value"     id="t1-faceoff">0</div>
+          <div class="value"     id="t1-pen">0</div>
+        </div>
+
+        <!-- Команда 2 -->
+        <div class="col">
+          <div class="col-title" id="team2-name">КОМАНДА 2</div>
+          <div class="value"     id="t2-shots">0</div>
+          <div class="value-red" id="t2-on">0</div>
+          <div class="value"     id="t2-faceoff">0</div>
+          <div class="value"     id="t2-pen">0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- НИЗ: панель управления -->
+  <div class="controls">
+    <div class="top-bar">
+      <div>
+        <button id="toggleTitle" class="toggle-btn off">ПОКАЗАТЬ ТИТР</button>
+      </div>
+      <div class="link-box">
+        Ссылка для vMix:&nbsp;
+        <span class="link-url" id="vmix-link"></span>
+      </div>
+    </div>
+
+    <!-- Названия команд -->
+    <div class="controls-row">
+      <div class="field">
+        <div class="field-label">Название команды 1</div>
+        <input class="team-input" id="input-team1" value="КОМАНДА 1">
+      </div>
+      <div class="field">
+        <div class="field-label">Название команды 2</div>
+        <input class="team-input" id="input-team2" value="КОМАНДА 2">
+      </div>
+    </div>
+
+    <!-- Броски -->
+    <div class="controls-row">
+      <div class="field">
+        <div class="field-label">Броски</div>
+
+        <div class="team-label">К1</div>
+        <button class="btn" data-target="t1-shots" data-delta="-1">-</button>
+        <div class="value-box" id="input-t1-shots">0</div>
+        <button class="btn" data-target="t1-shots" data-delta="1">+</button>
+
+        <div class="team-label">К2</div>
+        <button class="btn" data-target="t2-shots" data-delta="-1">-</button>
+        <div class="value-box" id="input-t2-shots">0</div>
+        <button class="btn" data-target="t2-shots" data-delta="1">+</button>
+      </div>
+    </div>
+
+    <!-- Броски в створ -->
+    <div class="controls-row">
+      <div class="field">
+        <div class="field-label">Броски в створ</div>
+
+        <div class="team-label">К1</div>
+        <button class="btn" data-target="t1-on" data-delta="-1">-</button>
+        <div class="value-box" id="input-t1-on">0</div>
+        <button class="btn" data-target="t1-on" data-delta="1">+</button>
+
+        <div class="team-label">К2</div>
+        <button class="btn" data-target="t2-on" data-delta="-1">-</button>
+        <div class="value-box" id="input-t2-on">0</div>
+        <button class="btn" data-target="t2-on" data-delta="1">+</button>
+      </div>
+    </div>
+
+    <!-- Вбрасывания -->
+    <div class="controls-row">
+      <div class="field">
+        <div class="field-label">Выигранные вбрасывания</div>
+
+        <div class="team-label">К1</div>
+        <button class="btn" data-target="t1-faceoff" data-delta="-1">-</button>
+        <div class="value-box" id="input-t1-faceoff">0</div>
+        <button class="btn" data-target="t1-faceoff" data-delta="1">+</button>
+
+        <div class="team-label">К2</div>
+        <button class="btn" data-target="t2-faceoff" data-delta="-1">-</button>
+        <div class="value-box" id="input-t2-faceoff">0</div>
+        <button class="btn" data-target="t2-faceoff" data-delta="1">+</button>
+      </div>
+    </div>
+
+    <!-- Штрафные минуты -->
+    <div class="controls-row">
+      <div class="field">
+        <div class="field-label">Штрафные минуты</div>
+
+        <div class="team-label">К1</div>
+        <button class="btn" data-target="t1-pen" data-delta="-1">-</button>
+        <div class="value-box" id="input-t1-pen">0</div>
+        <button class="btn" data-target="t1-pen" data-delta="1">+</button>
+
+        <div class="team-label">К2</div>
+        <button class="btn" data-target="t2-pen" data-delta="-1">-</button>
+        <div class="value-box" id="input-t2-pen">0</div>
+        <button class="btn" data-target="t2-pen" data-delta="1">+</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---- состояние статистики ----
+    const state = {
+      't1-shots': 0,
+      't2-shots': 0,
+      't1-on': 0,
+      't2-on': 0,
+      't1-faceoff': 0,
+      't2-faceoff': 0,
+      't1-pen': 0,
+      't2-pen': 0
+    };
+
+    function renderStat(id) {
+      const val = state[id];
+      document.getElementById(id).textContent = val;
+      const mirror = document.getElementById('input-' + id);
+      if (mirror) mirror.textContent = val;
+    }
+
+    Object.keys(state).forEach(renderStat);
+
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.target;
+        const delta = parseInt(btn.dataset.delta, 10);
+        state[target] = Math.max(0, state[target] + delta);
+        renderStat(target);
+      });
+    });
+
+    // ---- названия команд (редактируемые поля) ----
+    const team1Input = document.getElementById('input-team1');
+    const team2Input = document.getElementById('input-team2');
+
+    function syncTeams() {
+      document.getElementById('team1-name').textContent = team1Input.value || 'КОМАНДА 1';
+      document.getElementById('team2-name').textContent = team2Input.value || 'КОМАНДА 2';
+    }
+    team1Input.addEventListener('input', syncTeams);
+    team2Input.addEventListener('input', syncTeams);
+    syncTeams();
+
+    // ---- кнопка показа/скрытия титра с анимацией ----
+    const toggleBtn = document.getElementById('toggleTitle');
+    const titleWrap = document.getElementById('title-wrap');
+    let titleVisible = false;
+
+    toggleBtn.addEventListener('click', () => {
+      titleVisible = !titleVisible;
+      if (titleVisible) {
+        titleWrap.classList.add('visible');
+        toggleBtn.classList.remove('off');
+        toggleBtn.textContent = 'СКРЫТЬ ТИТР';
+      } else {
+        titleWrap.classList.remove('visible');
+        toggleBtn.classList.add('off');
+        toggleBtn.textContent = 'ПОКАЗАТЬ ТИТР';
+      }
+    });
+
+    // ---- ссылка для вставки в vMix ----
+    // В GitHub Pages её можно оставить статичной или подставлять hostname:
+    const url = window.location.href.split('#')[0];
+    document.getElementById('vmix-link').textContent = url;
+  </script>
+</body>
+</html>
